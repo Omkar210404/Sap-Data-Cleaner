@@ -1,0 +1,14 @@
+SOURCE_ROW,REJECT_REASONS,LIFNR,NAME1,ORT01,PSTLZ,LAND1,STCD1,KTOKK,ZTERM,WAERS,ERDAT
+6,LAND1 'ZZ' is not a known country code; ORT01 is blank,200005,Orbita Electricals Pvt Ltd,,560058,ZZ,SYN97086737,ZDOM,NT30,INR,20.04.2024
+11,KTOKK is blank,200010,Brennfeld Hydraulik AG   ,Stuttgart,70565,de,SYN47553014,,NT60,eur,2023-10-01
+12,ERDAT '2023-13-05' is not a valid date,0000200011,Kestrelle Automation GmbH,  Munich,80331,Germany,SYN55177213,ZIMP,NT45,EUR,2023-13-05
+14,LAND1 is blank,200013,Greywater Logistics Ltd,Leeds,LS1 4AP,,SYN90377459,ZSRV,NT30,GBP,08/02/2020
+16,near-duplicate of row 13 (NAME1 similarity 1.00),200103,Finch & Marlowe Packaging Limited,Manchester,M2 5BQ,GB,SYN01297845,ZIMP,NT45,GBP,2020-04-03
+19,exact duplicate of row 15,200014,TAMSIN TOOLS INC ,Chicago,60601,US,SYN08135295,ZIMP,NT60,USD,08.07.2023
+21,near-duplicate of row 2 (NAME1 similarity 1.00),200101,Zentrix Bearings Private Limited,Pune   ,411019,in,SYN99486328,ZDOM,NT30,inr,2023-12-15
+22,near-duplicate of row 3 (NAME1 similarity 0.98),200102,Kavora Industrial Suplies,Mumbai,400072,India,SYN94713081,ZDOM,NT45,INR,2023-10-18
+24,NAME1 is blank,0000200019,,Ningbo,315000,CN,SYN18814949,ZIMP,NT60,CNY,2023-09-25
+27,same LIFNR as row 25 but different ORT01,0000200020,Colles Aurelienne SAS,Marseille,69003,fr,SYN24627347,ZIMP,NT45,eur,14/02/2022
+28,near-duplicate of row 10 (NAME1 similarity 1.00),200104,BLUEPEAK LUBRICANTS GMBH.,Hamburg,20457,DE,SYN92747083,ZIMP,,EUR,2020-09-02
+29,exact duplicate of row 20,200017,LUMENFIELD CABLES PTE LTD ,Singapore,609916,sg,SYN25714784,ZIMP,,sgd,18.02.2021
+32,LAND1 'Atlantis' is not a known country code,200024,Meghna Weld Consumables,Faridabad,121003,Atlantis,SYN06789850,ZSRV,NT30,INR,02/03/2019

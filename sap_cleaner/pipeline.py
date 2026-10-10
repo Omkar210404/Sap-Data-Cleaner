@@ -35,7 +35,7 @@ class InputError(Exception):
 class CleanResult:
     cleaned: pd.DataFrame    # rows that passed, with fixes applied
     rejected: pd.DataFrame   # rows that failed, as they were in the input, plus the reasons
-    changes: pd.DataFrame    # one line per cell changed in a cleaned row
+    changes: pd.DataFrame    # one line per change made to a cleaned row
     rows_read: int
     rules_run: list
     log: RunLog

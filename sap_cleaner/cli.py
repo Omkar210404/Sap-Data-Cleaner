@@ -59,7 +59,7 @@ def run_clean(args):
     print(f"Read {result.rows_read} rows from {Path(args.input).as_posix()} ({args.type})")
     print(f"  cleaned  {len(result.cleaned):>5} rows  -> {paths['cleaned'].as_posix()}")
     print(f"  rejected {len(result.rejected):>5} rows  -> {paths['rejected'].as_posix()}")
-    print(f"  changes  {len(result.changes):>5} cells -> {paths['changes'].as_posix()}")
+    print(f"  changes  {len(result.changes):>5} lines -> {paths['changes'].as_posix()}")
     print(f"  report               -> {paths['report'].as_posix()}")
     return EXIT_OK
 

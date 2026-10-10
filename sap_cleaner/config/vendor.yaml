@@ -18,8 +18,8 @@ rules:
     null_tokens: ["NULL", "N/A", "#N/A", "NONE", "-"]
 
   uppercase:
-    # Names and cities keep their case.
-    columns: [PSTLZ, LAND1, STCD1, KTOKK, ZTERM, WAERS]
+    # Names and cities keep their case. LAND1 is uppercased by the country rule.
+    columns: [PSTLZ, STCD1, KTOKK, ZTERM, WAERS]
 
   zero_pad:
     # Numeric IDs are left-padded with zeros to this width. Alphanumeric IDs are not padded.

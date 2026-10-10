@@ -189,6 +189,19 @@ def test_committed_sample_files_match_the_generator(sample_dir):
         assert committed == (sample_dir / name).read_text(encoding="utf-8"), name
 
 
+def test_committed_example_outputs_match_a_fresh_run(tmp_path):
+    """The README quotes examples/output/, so it must be what the tool really produces."""
+    for data_type, spec in CASES.items():
+        done = run_cli("clean", "--input", f"data/synthetic/{spec['file']}.csv",
+                       "--type", data_type, "--out", str(tmp_path))
+        assert done.returncode == 0, done.stderr
+    committed = sorted(path.name for path in (ROOT / "examples" / "output").iterdir())
+    assert committed == sorted(path.name for path in tmp_path.iterdir())
+    for name in committed:
+        fresh = (tmp_path / name).read_text(encoding="utf-8")
+        assert fresh == (ROOT / "examples" / "output" / name).read_text(encoding="utf-8"), name
+
+
 # --- error handling ---------------------------------------------------------
 
 def test_missing_input_file_exits_1(tmp_path):

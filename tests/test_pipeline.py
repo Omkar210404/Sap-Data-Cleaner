@@ -74,8 +74,8 @@ def test_rejected_rows_keep_their_original_values(make_df, vendor_config, refere
 def test_changes_list_every_fix_made_to_a_cleaned_row(make_df, vendor_config, reference):
     result = clean(make_df([vendor_row(LAND1="us", ZTERM="")]), vendor_config, reference)
     assert result.changes.values.tolist() == [
-        [2, "LAND1", "us", "US", "uppercase"],
         [2, "LIFNR", "200014", "0000200014", "zero_pad"],
+        [2, "LAND1", "us", "US", "country"],
         [2, "ZTERM", "", "0001", "mandatory"],
     ]
 
@@ -86,7 +86,7 @@ def test_a_disabled_rule_does_not_run(make_df, vendor_config, reference):
     result = clean(make_df([vendor_row(LAND1="Atlantis")]), vendor_config, reference)
     assert "zero_pad" not in result.rules_run and "country" not in result.rules_run
     assert result.cleaned.at[2, "LIFNR"] == "200014"
-    assert result.cleaned.at[2, "LAND1"] == "ATLANTIS"
+    assert result.cleaned.at[2, "LAND1"] == "Atlantis"
 
 
 def test_flag_action_keeps_near_duplicates_with_a_note(make_df, vendor_config, reference):

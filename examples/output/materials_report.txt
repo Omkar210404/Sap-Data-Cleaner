@@ -1,0 +1,45 @@
+SAP DATA CLEANER - SUMMARY REPORT
+=================================
+Input file : data/synthetic/materials.csv
+Data type  : material
+Rules file : built-in material.yaml
+Rules run  : trim, uppercase, zero_pad, dates, unit_of_measure, mandatory, exact_duplicates, near_duplicates
+
+ROWS
+  Read         38
+  Cleaned      25
+  Rejected     13
+
+CHANGES MADE TO CLEANED ROWS, BY RULE
+  trim                 6
+  uppercase            6
+  zero_pad            13
+  dates               17
+  unit_of_measure     10
+  mandatory            5
+  Total               57
+  Rejected rows are written back unchanged, so changes to them are not counted.
+
+BLANK VALUES FILLED WITH A DEFAULT, BY FIELD
+  GEWEI      3
+  MATKL      2
+
+REJECTED ROWS, BY REASON
+  near-duplicate                        3
+  exact duplicate                       2
+  invalid date in ERSDA                 2
+  unknown unit of measure in MEINS      2
+  invalid MATNR                         1
+  key conflict                          1
+  missing mandatory field MAKTX         1
+  missing mandatory field MEINS         1
+  missing mandatory field MTART         1
+  A row with several problems is counted once under each reason.
+
+EXAMPLES OF CHANGES (first one per rule)
+  row 2    MATNR  '100001' -> '000000000000100001'  (zero_pad)
+  row 2    ERSDA  '13.04.2019' -> '2019-04-13'  (dates)
+  row 4    MTART  'roh' -> 'ROH'  (uppercase)
+  row 4    MEINS  'pc' -> 'PC'  (unit_of_measure)
+  row 6    MAKTX  '  BALL BEARING 6204 2RS' -> 'BALL BEARING 6204 2RS'  (trim)
+  row 9    GEWEI  '' -> 'KG'  (mandatory)

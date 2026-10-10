@@ -18,7 +18,8 @@ rules:
     null_tokens: ["NULL", "N/A", "#N/A", "NONE", "-"]
 
   uppercase:
-    columns: [MAKTX, MTART, MATKL, MEINS, GEWEI]
+    # MEINS and GEWEI are uppercased by the unit_of_measure rule.
+    columns: [MAKTX, MTART, MATKL]
 
   zero_pad:
     # Numeric IDs are left-padded with zeros to this width. Alphanumeric IDs are not padded.

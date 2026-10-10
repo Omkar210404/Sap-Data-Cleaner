@@ -17,7 +17,7 @@ def material(matnr, text, **overrides):
 def result(make_df):
     df = make_df([
         material("100001", "HEX BOLT M8X20", ERSDA="15.03.2024"),      # 2: zero_pad + dates
-        material("100002", "hex nut m8", MEINS="pcs", GEWEI=""),       # 3: uppercase x2, zero_pad, unit, fill
+        material("100002", "hex nut m8", MEINS="pcs", GEWEI=""),       # 3: uppercase, zero_pad, unit, fill
         material("100003", "", MEINS="QQ"),                            # 4: rejected, two reasons
         material("100002", "HEX NUT M8", GEWEI=""),                    # 5: exact duplicate of row 3
         material("000000000000100004", "FLAT WASHER M8", MATKL=""),    # 6: fill
@@ -37,7 +37,7 @@ def test_summary_counts_match_the_output_tables(result):
 
 def test_summary_breaks_changes_down_by_rule(result):
     assert summarise(result)["changes_by_rule"] == {
-        "uppercase": 2, "zero_pad": 2, "dates": 1, "unit_of_measure": 1, "mandatory": 2,
+        "uppercase": 1, "zero_pad": 2, "dates": 1, "unit_of_measure": 1, "mandatory": 2,
     }
 
 
