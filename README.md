@@ -243,8 +243,8 @@ Needs Python 3.11 or newer (pandas 3 does not support older versions).
 Tested on Python 3.11.9 on Windows 11.
 
 ```
-git clone <repository-url>
-cd sap-data-cleaner
+git clone https://github.com/Omkar210404/Sap-Data-Cleaner.git
+cd Sap-Data-Cleaner
 python -m venv .venv
 ```
 
