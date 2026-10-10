@@ -180,6 +180,15 @@ Small, one concern each, author identity as in the sibling repos, no `Co-Authore
 - A small Mermaid diagram of the pipeline will be in the README.
 - This is a fourth project outside the three listed in `brain.md`; `brain.md` and `prompts/` stay untouched and outside this repo.
 
+## 14. Added after the first build: local web page
+
+Requested once the CLI was done. `python -m sap_cleaner serve` starts a page on `127.0.0.1` where a CSV can be uploaded, inspected tab by tab and the output files downloaded.
+
+- Standard library `http.server` plus plain HTML/CSS/JS in `sap_cleaner/webui/`, so no new dependencies.
+- The upload goes through the same pipeline as the CLI. `outputs.py` builds the output files for both, and a test checks they are identical.
+- Nothing uploaded is written to disk. Local only, no login.
+- `tests/test_web.py` runs the real server on a free port. The browser side was checked by a scripted run in Edge, which is not in the test suite.
+
 ## 13. Decisions (approved as planned)
 
 1. **Near-duplicates default**: later occurrences move to the rejected file for review. `action: flag` keeps them in the cleaned file with a note column instead.

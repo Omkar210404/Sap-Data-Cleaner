@@ -3,7 +3,8 @@
 A small Python command-line tool that cleans messy SAP-style master data
 exports (material master and vendor master CSV files) with pandas. The
 cleaning rules live in YAML files, so they can be changed without touching the
-code.
+code. It also has a [local web page](#web-page) for uploading a file and
+looking at the result.
 
 > **All data in this repository is synthetic.** The sample files are written by
 > a script from invented values. Nothing here comes from a real SAP system or a
@@ -304,6 +305,40 @@ out identical):
 python scripts/generate_sample_data.py
 ```
 
+## Web page
+
+The same cleaner can be used from a browser on your own computer:
+
+```
+python -m sap_cleaner serve
+```
+
+It prints `http://127.0.0.1:8765/`. Open that address, press **Clean a CSV
+file**, choose a file and the page shows what happened to it. `--port` picks
+another port; Ctrl+C stops it.
+
+![Cleaned tab with old values shown](docs/web-cleaned.png)
+
+- **Upload.** Pick or drop a CSV. The separator and the data type are guessed
+  from the header line and can be changed before you press Clean file.
+- **Tabs per file.** Overview (changes per rule, rejects per reason), Input,
+  Cleaned (changed cells in green, with the old value on request), Rejected
+  (each row with its reasons), Changes and the text Report.
+- **Download.** The cleaned, rejected and changes CSVs and the report. They are
+  the same files the `clean` command writes; a test compares them.
+- **Samples.** The two synthetic sample runs are loaded when the page opens, so
+  there is something to look at before uploading anything.
+
+![Upload dialog](docs/web-upload.png)
+
+![Rejected tab](docs/web-rejected.png)
+
+The screenshots show the synthetic sample data. The page is built with the
+Python standard library and plain HTML, CSS and JavaScript, so it adds no
+dependencies. An uploaded file is cleaned in memory and is not written to disk.
+The server listens on `127.0.0.1` only and has no login: it is a local tool,
+not something to put on a network.
+
 ## Changing the rules
 
 Each data type has one rules file:
@@ -348,8 +383,9 @@ must be quoted strings, and the loader says so if they are not.
 python -m pytest
 ```
 
-153 tests pass on Python 3.11.9 with the pinned dependencies. There is a test
-module for each rule, plus config, pipeline and report tests.
+171 tests pass on Python 3.11.9 with the pinned dependencies. There is a test
+module for each rule, plus config, pipeline, report and web page tests. The web
+tests start the real server on a free port and upload files to it over HTTP.
 
 The end-to-end test ([tests/test_cli_e2e.py](tests/test_cli_e2e.py)) generates
 the sample data with the real script, runs the real CLI as a subprocess, and
@@ -422,6 +458,12 @@ model of SAP.
   recommendations.
 - **Row numbers assume one record per line.** A quoted field containing a line
   break shifts the numbering.
+- **The web page is a local convenience, not a service.** No login, one
+  computer only, built-in rules only (a custom rules file needs the `clean`
+  command), uploads up to 20 MB, and each table shows at most the first 1,000
+  rows (the downloads contain all of them). Its layout and buttons were checked
+  in Microsoft Edge by a scripted run that is not part of the test suite; the
+  automated tests cover the server, not the browser side.
 - **Output is always UTF-8**, whatever the input encoding. The automated tests
   cover comma and semicolon separated UTF-8 input; a tab-separated `cp1252`
   file was only checked by hand.
@@ -435,11 +477,15 @@ sap_cleaner/
   pipeline.py       reads the CSV, runs the rules in order, builds the tables
   runlog.py         records every change and reject reason
   report.py         builds the text summary
+  outputs.py        the output files as text, shared by the CLI and the web page
+  web.py            local web page: server, upload endpoint, HTML rendering
+  webui/            page.html, style.css, app.js
   rules/            standardise, dates, reference, mandatory, duplicates
   config/           material.yaml, vendor.yaml, reference.yaml
 scripts/generate_sample_data.py
 data/synthetic/     synthetic sample input and the generator's manifest
 examples/output/    outputs of a real run on the sample data
+docs/               screenshots of the web page
 tests/
 ```
 
