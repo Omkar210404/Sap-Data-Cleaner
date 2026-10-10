@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sap-data-cleaner</title>
+<link rel="icon" href="data:,">
+<style>/*STYLE*/</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><b>sap-data-cleaner</b><span>Clean SAP-style material and vendor master CSV files</span></div>
+    <div class="seg" id="datasets"></div>
+    <div class="badge" id="badge"></div>
+    <button class="primary" id="open-upload">Clean a CSV file</button>
+  </header>
+  <!--RUNS-->
+  <main class="empty" id="empty" hidden>
+    <h2>No file cleaned yet</h2>
+    <p>Upload a material master or vendor master CSV to see what the cleaner fixes and what it rejects.</p>
+    <button class="primary" data-open-upload>Clean a CSV file</button>
+  </main>
+</div>
+
+<dialog id="upload">
+  <form id="upload-form">
+    <h2>Clean a CSV file</h2>
+    <p class="sub">The file is cleaned on this computer with the built-in rules. It is not saved or sent anywhere.</p>
+
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept=".csv,.txt,.tsv,text/csv">
+      <b id="drop-title">Choose a file or drop it here</b>
+      <span id="drop-sub">CSV, up to <span id="max-size"></span> MB</span>
+    </label>
+
+    <div class="fields">
+      <div class="field">
+        <span class="label">Data type</span>
+        <div class="seg small" id="type">
+          <button type="button" data-type="material" aria-pressed="true">Material</button>
+          <button type="button" data-type="vendor" aria-pressed="false">Vendor</button>
+        </div>
+      </div>
+      <label class="field"><span class="label">Separator</span>
+        <select id="delimiter">
+          <option value=",">Comma ( , )</option>
+          <option value=";">Semicolon ( ; )</option>
+          <option value="&#9;">Tab</option>
+          <option value="|">Pipe ( | )</option>
+        </select></label>
+      <label class="field"><span class="label">Encoding</span>
+        <select id="encoding">
+          <option value="utf-8-sig">UTF-8</option>
+          <option value="cp1252">Windows-1252</option>
+        </select></label>
+    </div>
+
+    <p class="needs">Columns the file must have: <span id="needs"></span></p>
+    <p class="error" id="upload-error" hidden></p>
+
+    <div class="actions">
+      <button type="button" id="cancel-upload">Cancel</button>
+      <button type="submit" class="primary" id="submit-upload" disabled>Clean file</button>
+    </div>
+  </form>
+</dialog>
+
+<script type="application/json" id="data">/*DATA*/</script>
+<script>/*SCRIPT*/</script>
+</body>
+</html>
