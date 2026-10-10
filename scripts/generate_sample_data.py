@@ -385,7 +385,11 @@ def main():
         entry = manifest[name]
         print(f"{entry['file']}: {entry['rows']} rows, "
               f"{len(entry['expected_rejects'])} expected rejects (SYNTHETIC)")
-    print(f"Written to {Path(os.path.relpath(args.out)).as_posix()}")
+    try:
+        shown = os.path.relpath(args.out)
+    except ValueError:  # Windows: output is on a different drive from the current directory
+        shown = args.out
+    print(f"Written to {Path(shown).as_posix()}")
 
 
 if __name__ == "__main__":

@@ -407,9 +407,11 @@ model of SAP.
 - **Dates are read day-first from a fixed list of formats.** A US-style
   `03/04/2024` is read as 3 April without warning. Two-digit years are rejected.
 - **Near-duplicate matching is plain text similarity.** It does not understand
-  abbreviations (`BRG` for `BEARING`), synonyms or translations, and it only
-  compares rows inside one block (same country, or same material type), so a
-  duplicate vendor entered under the wrong country is missed.
+  abbreviations (`BRG` for `BEARING`), synonyms or translations. Legal forms are
+  only ignored when written as one word, so `G.m.b.H` is not recognised as
+  `GmbH`. It only compares rows inside one block (same country, or same
+  material type), so a duplicate vendor entered under the wrong country is
+  missed.
 - **The first occurrence is always the one kept**, with no check of which record
   is better. For a key conflict the first row may be the wrong one. The rejected
   file names both rows so a person can decide.
@@ -420,8 +422,9 @@ model of SAP.
   recommendations.
 - **Row numbers assume one record per line.** A quoted field containing a line
   break shifts the numbering.
-- **Output is always UTF-8**, whatever the input encoding. Only comma and
-  semicolon separated UTF-8 input is covered by tests.
+- **Output is always UTF-8**, whatever the input encoding. The automated tests
+  cover comma and semicolon separated UTF-8 input; a tab-separated `cp1252`
+  file was only checked by hand.
 
 ## Project layout
 

@@ -139,8 +139,9 @@ One test module per rule, small in-memory DataFrames, each asserting both the fi
 | `test_mandatory.py` | reject action, fill action, conditional fill, multiple reasons on one row |
 | `test_duplicates.py` | exact duplicate keeps first; key conflict; near-duplicate above/below threshold; digits-differ pair not matched; blocking by country |
 | `test_config.py` | built-in configs load; bad rule name and missing column give clear errors |
+| `test_pipeline.py` | reading text without losing zeros, rule order, disabled rules, rejected rows kept as input, flag action |
 | `test_report.py` | report counts equal the pipeline's counts |
-| `test_cli_e2e.py` | **end-to-end**: generate sample data into a temp dir, run the CLI as a subprocess, check all output files exist, cleaned + rejected = input rows, expected reject counts per reason, no leading-zero loss, running the cleaner on its own cleaned output changes nothing |
+| `test_cli_e2e.py` | **end-to-end**: generate sample data into a temp dir, run the CLI as a subprocess, check all output files exist, cleaned + rejected = input rows, expected reject counts per reason, no leading-zero loss, running the cleaner on its own cleaned output changes nothing, committed sample data and example outputs match a fresh run |
 
 ## 10. Commits
 
