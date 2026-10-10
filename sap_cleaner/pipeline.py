@@ -41,21 +41,25 @@ class CleanResult:
     log: RunLog
 
 
-def read_input(path, delimiter=",", encoding="utf-8-sig"):
+def read_input(source, delimiter=",", encoding="utf-8-sig", name=None):
     """Read a CSV with every value as text, so IDs keep their leading zeros.
 
-    The index is the source row number as a spreadsheet shows it: the header
-    is row 1 and the first data row is row 2.
+    `source` is a path or an open binary file; `name` is what error messages
+    call it. The index is the source row number as a spreadsheet shows it: the
+    header is row 1 and the first data row is row 2.
     """
+    name = name or source
     try:
-        df = pd.read_csv(path, sep=delimiter, encoding=encoding, dtype=str,
+        df = pd.read_csv(source, sep=delimiter, encoding=encoding, dtype=str,
                          keep_default_na=False, na_filter=False)
     except FileNotFoundError:
-        raise InputError(f"input file not found: {path}") from None
+        raise InputError(f"input file not found: {name}") from None
     except pd.errors.EmptyDataError:
-        raise InputError(f"input file is empty: {path}") from None
+        raise InputError(f"input file is empty: {name}") from None
+    except LookupError:
+        raise InputError(f"unknown encoding: {encoding}") from None
     except (pd.errors.ParserError, UnicodeDecodeError) as error:
-        raise InputError(f"could not read {path}: {error}") from None
+        raise InputError(f"could not read {name}: {error}") from None
     df = df.fillna("")
     df.columns = [str(column).strip() for column in df.columns]
     df.index = range(2, len(df) + 2)
