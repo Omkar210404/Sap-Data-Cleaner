@@ -1,0 +1,66 @@
+# Cleaning rules for SAP-style VENDOR master exports.
+#
+# Rules always run in a fixed order (trim, uppercase, zero_pad, dates,
+# unit_of_measure, country, mandatory, exact_duplicates, near_duplicates),
+# whatever their order in this file. Delete a rule or set `enabled: false`
+# to switch it off.
+#
+# Quote anything YAML would otherwise reinterpret: "0001", "1000", "NO".
+
+data_type: vendor
+
+# Columns the input file must contain. Extra columns are trimmed and passed through.
+columns: [LIFNR, NAME1, ORT01, PSTLZ, LAND1, STCD1, KTOKK, ZTERM, WAERS, ERDAT]
+
+rules:
+  trim:
+    # Values treated as blank. "NA" is deliberately absent: it is Namibia's country code.
+    null_tokens: ["NULL", "N/A", "#N/A", "NONE", "-"]
+
+  uppercase:
+    # Names and cities keep their case.
+    columns: [PSTLZ, LAND1, STCD1, KTOKK, ZTERM, WAERS]
+
+  zero_pad:
+    # Numeric IDs are left-padded with zeros to this width. Alphanumeric IDs are not padded.
+    columns:
+      LIFNR: 10
+    allowed_pattern: "[A-Z0-9-]+"
+
+  dates:
+    columns: [ERDAT]
+    # Tried in order; the first format that fits wins. Day comes before month.
+    input_formats: ["%Y-%m-%d", "%d.%m.%Y", "%Y%m%d", "%d/%m/%Y", "%d-%m-%Y"]
+    output_format: "%Y-%m-%d"
+    # SAP's "initial" date, meaning no date was set.
+    blank_values: ["00000000", "00.00.0000"]
+
+  country:
+    columns: [LAND1]
+
+  mandatory:
+    fields:
+      LIFNR: {action: reject}
+      NAME1: {action: reject}
+      ORT01: {action: reject}
+      LAND1: {action: reject}
+      KTOKK: {action: reject}
+      # Example default. A real project would agree this with the data owner.
+      ZTERM: {action: fill, value: "0001"}
+
+  exact_duplicates:
+    key: [LIFNR]
+    ignore_case: true
+
+  near_duplicates:
+    column: NAME1
+    # Only vendors in the same country are compared with each other.
+    block_by: [LAND1]
+    distinct_on: [LIFNR]
+    threshold: 0.90
+    # reject = move later occurrences to the rejected file for review.
+    # flag   = keep them in the cleaned file and add a NEAR_DUPLICATE_NOTE column.
+    action: reject
+    # Legal-form words that should not make two names look different.
+    ignore_tokens: [PVT, PRIVATE, LTD, LIMITED, LLP, LLC, INC, CORP, CORPORATION,
+                    CO, COMPANY, GMBH, AG, PTE, PLC, SAS, SA, BV]

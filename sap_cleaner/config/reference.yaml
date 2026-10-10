@@ -1,0 +1,69 @@
+# Built-in reference lists. These are small illustrative subsets, not complete
+# copies of the SAP unit table (T006) or the ISO 3166 country list.
+#
+# Every entry is quoted on purpose: unquoted, YAML reads NO (Norway) as false.
+
+units_of_measure:
+  valid: ["EA", "PC", "KG", "G", "TO", "L", "ML", "M", "CM", "MM", "M2", "M3",
+          "BOX", "BAG", "ROL", "CAR", "PAL", "SET", "DZ", "PAA"]
+  # Common spellings mapped to the code above.
+  aliases:
+    "PCS": "PC"
+    "PCE": "PC"
+    "ST": "PC"       # German "Stueck", SAP's internal code for piece
+    "EACH": "EA"
+    "NOS": "EA"
+    "KGS": "KG"
+    "KILOGRAM": "KG"
+    "GM": "G"
+    "GMS": "G"
+    "TON": "TO"
+    "MT": "TO"
+    "LTR": "L"
+    "LITRE": "L"
+    "LITER": "L"
+    "MTR": "M"
+    "METER": "M"
+    "METRE": "M"
+    "SQM": "M2"
+    "CBM": "M3"
+    "BOXES": "BOX"
+    "BAGS": "BAG"
+    "ROLL": "ROL"
+    "CARTON": "CAR"
+    "PALLET": "PAL"
+    "DOZ": "DZ"
+    "PAIR": "PAA"
+    "PR": "PAA"
+
+countries:
+  # ISO 3166-1 alpha-2
+  valid: ["AE", "AT", "AU", "BD", "BE", "BR", "CA", "CH", "CN", "CZ", "DE", "DK",
+          "EG", "ES", "FI", "FR", "GB", "HK", "ID", "IE", "IL", "IN", "IT", "JP",
+          "KR", "LK", "MX", "MY", "NA", "NL", "NO", "NP", "NZ", "PH", "PL", "PT",
+          "SA", "SE", "SG", "TH", "TR", "TW", "US", "VN", "ZA"]
+  aliases:
+    "INDIA": "IN"
+    "IND": "IN"
+    "GERMANY": "DE"
+    "DEUTSCHLAND": "DE"
+    "DEU": "DE"
+    "UNITED STATES": "US"
+    "UNITED STATES OF AMERICA": "US"
+    "USA": "US"
+    "UK": "GB"
+    "UNITED KINGDOM": "GB"
+    "GBR": "GB"
+    "UAE": "AE"
+    "UNITED ARAB EMIRATES": "AE"
+    "SINGAPORE": "SG"
+    "SGP": "SG"
+    "JAPAN": "JP"
+    "JPN": "JP"
+    "CHINA": "CN"
+    "CHN": "CN"
+    "FRANCE": "FR"
+    "FRA": "FR"
+    "NETHERLANDS": "NL"
+    "HOLLAND": "NL"
+    "NLD": "NL"

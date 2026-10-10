@@ -1,0 +1,66 @@
+# Cleaning rules for SAP-style MATERIAL master exports.
+#
+# Rules always run in a fixed order (trim, uppercase, zero_pad, dates,
+# unit_of_measure, country, mandatory, exact_duplicates, near_duplicates),
+# whatever their order in this file. Delete a rule or set `enabled: false`
+# to switch it off.
+#
+# Quote anything YAML would otherwise reinterpret: "0001", "1000", "NO".
+
+data_type: material
+
+# Columns the input file must contain. Extra columns are trimmed and passed through.
+columns: [MATNR, MAKTX, MTART, MATKL, MEINS, WERKS, BRGEW, GEWEI, ERSDA]
+
+rules:
+  trim:
+    # Values treated as blank. "NA" is deliberately absent: it is Namibia's country code.
+    null_tokens: ["NULL", "N/A", "#N/A", "NONE", "-"]
+
+  uppercase:
+    columns: [MAKTX, MTART, MATKL, MEINS, GEWEI]
+
+  zero_pad:
+    # Numeric IDs are left-padded with zeros to this width. Alphanumeric IDs are not padded.
+    columns:
+      MATNR: 18
+    allowed_pattern: "[A-Z0-9-]+"
+
+  dates:
+    columns: [ERSDA]
+    # Tried in order; the first format that fits wins. Day comes before month.
+    input_formats: ["%Y-%m-%d", "%d.%m.%Y", "%Y%m%d", "%d/%m/%Y", "%d-%m-%Y"]
+    output_format: "%Y-%m-%d"
+    # SAP's "initial" date, meaning no date was set.
+    blank_values: ["00000000", "00.00.0000"]
+
+  unit_of_measure:
+    columns: [MEINS, GEWEI]
+
+  mandatory:
+    fields:
+      MATNR: {action: reject}
+      MAKTX: {action: reject}
+      MTART: {action: reject}
+      MEINS: {action: reject}
+      WERKS: {action: reject}
+      # Example defaults. A real project would agree these with the data owner.
+      MATKL: {action: fill, value: "UNCLASS"}
+      GEWEI: {action: fill, value: "KG", when_present: BRGEW}
+
+  exact_duplicates:
+    # One material can exist in several plants, so the plant is part of the key.
+    key: [MATNR, WERKS]
+    ignore_case: true
+
+  near_duplicates:
+    column: MAKTX
+    # Only rows with the same material type are compared with each other.
+    block_by: [MTART]
+    # Rows with the same material number are the same material, not a near-duplicate.
+    distinct_on: [MATNR]
+    threshold: 0.90
+    # reject = move later occurrences to the rejected file for review.
+    # flag   = keep them in the cleaned file and add a NEAR_DUPLICATE_NOTE column.
+    action: reject
+    ignore_tokens: []
