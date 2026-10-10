@@ -1,0 +1,6 @@
+# Tested on Python 3.11.9.
+pandas==3.0.6
+PyYAML==6.0.3
+
+# Tests only
+pytest==9.1.1
