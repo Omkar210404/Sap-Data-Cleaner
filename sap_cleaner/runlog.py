@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+import pandas as pd
+
 
 @dataclass
 class RunLog:
@@ -37,8 +39,9 @@ class RunLog:
 
 
 def apply_changes(df, column, new_values, rule, log):
-    """Write new values into a column and log every cell that actually changed."""
+    """Write new values (one per row, in order) into a column and log every cell that changed."""
     old_values = df[column]
+    new_values = pd.Series(list(new_values), index=df.index, dtype=old_values.dtype)
     for row in df.index[old_values != new_values]:
         log.change(row, column, old_values[row], new_values[row], rule)
     df[column] = new_values
